@@ -6,6 +6,9 @@ from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
 import shap
 from shap.plots import _waterfall
+import lime
+from lime import lime_tabular
+
 plt.style.use('default')
 
 # dashboard title
@@ -75,13 +78,18 @@ if st.button("Predict"):
     st.success('The risk group'+ b)
  
 
-    explainer = shap.KernelExplainer(rf.predict,x_train)
-    shap_values = explainer.shap_values(outputdf)
+    explainer = lime_tabular.LimeTabularExplainer(
+    training_data=np.array(trainx),
+    feature_names=trainx.columns,
+    class_names=['empty', 'full'],
+    mode=“classification”)
 
+    exp = explainer.explain_instance(data_row=np.squeeze(outputdf.T), predict_fn=Cb.predict_proba)
+    exp.show_in_notebook(show_table=True)
     
-    st_shap(shap.plots.waterfall(shap_values[0]),  height=500, width=1700)
+    #st_shap(shap.plots.waterfall(shap_values[0]),  height=500, width=1700)
     st.set_option('deprecation.showPyplotGlobalUse', False)
-    shap.summary_plot(shap_values,outputdf,feature_names=X.columns)
+    #shap.summary_plot(shap_values,outputdf,feature_names=X.columns)
 
 
 st.markdown("*Statement: this website will not record or store any information inputed.")
