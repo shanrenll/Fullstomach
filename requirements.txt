@@ -1,0 +1,5 @@
+Numpy == 1.23.5
+shap == 0.41.0
+pandas == 1.5.2
+matplotlib == 3.6.2
+scikit-learn == 1.1.3
