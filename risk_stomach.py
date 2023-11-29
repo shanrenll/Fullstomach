@@ -75,9 +75,9 @@ else:
 
 if st.button("Predict"): 
     st.success('The probability of Full stomach: {:.2f}%'.format(p3[0]*100))
-    st.success('The risk group'+ b)
+    st.success('The risk group'+": "+b)
  
-
+    st.write("Lime plot analysis of Full-stomach for the patient:")
     explainer = lime_tabular.LimeTabularExplainer(
     training_data=np.array(trainx),
     feature_names=trainx.columns,
@@ -87,9 +87,8 @@ if st.button("Predict"):
     exp = explainer.explain_instance(data_row=np.squeeze(outputdf.T), predict_fn=Cb.predict_proba)
     exp.show_in_notebook(show_table=True)
     
-    #st_shap(shap.plots.waterfall(shap_values[0]),  height=500, width=1700)
     st.set_option('deprecation.showPyplotGlobalUse', False)
-    #shap.summary_plot(shap_values,outputdf,feature_names=X.columns)
+    st.pyplot(bbox_inches='tight')
 
 
 st.markdown("*Statement: this website will not record or store any information inputed.")
